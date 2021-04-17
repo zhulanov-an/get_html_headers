@@ -17,10 +17,11 @@ decoded_data = data.decode("utf-8")
 print("Got data", decoded_data)
 
 resp_heads = "HTTP/1.1 200 OK\nContent-Length: 100\n Connection: close\n Content-Type: text/html\n\n"
-response = resp_heads + "<body><ul>"
+response = resp_heads + "<body><table><tr><th>header</th><th>value</th></tr>"
 for item in decoded_data.split("\r\n")[1:-2]:
-    response += f"<li>{item}</li>"
-response += "</ul></body>"
+    header, *value = item.split(":")
+    response += f"<tr><td><b>{header}</b></td><td>{':'.join(value)}</td></tr>"
+response += "</table></body>"
 
 conn.send(response.encode("utf-8"))
 
